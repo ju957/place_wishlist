@@ -22,6 +22,7 @@ def places_visited(request):
     visited = Place.objects.filter(visited=True)
     return render(request, 'visited.html', {'visited':visited})
 
+
 def place_was_visited(request, place_pk):
     if request.method == 'POST':
         place = get_object_or_404(Place, pk=place_pk)

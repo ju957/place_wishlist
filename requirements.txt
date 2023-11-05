@@ -1,1 +1,7 @@
 Django==4.2.7
+asgiref==3.7.2
+pip==23.2.1
+setuptools==68.2.0
+sqlparse==0.4.4
+tzdata==2023.3
+wheel==0.41.2
