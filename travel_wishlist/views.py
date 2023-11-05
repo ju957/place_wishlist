@@ -18,11 +18,15 @@ def place_list(request):
     return render(request, 'wishlist.html', {'places': places, 'new_place_form': new_place_form})
 
 
+"""Gets all of the places in the database that HAVE BEEN visited to be displayed, using visited.html as a template for
+formatting."""
 def places_visited(request):
     visited = Place.objects.filter(visited=True)
-    return render(request, 'visited.html', {'visited':visited})
+    return render(request, 'visited.html', {'visited': visited})
 
 
+"""This function changes the status of a place from unvisited TO visited, and makes a change to the database entry.
+Error handling for nonexistent locations is present."""
 def place_was_visited(request, place_pk):
     if request.method == 'POST':
         place = get_object_or_404(Place, pk=place_pk)
@@ -32,6 +36,7 @@ def place_was_visited(request, place_pk):
     return redirect('place_list')
 
 
+"""Sends back a formatted About page with about.html as the format, and author information."""
 def about(request):
     author = 'Zion Nichols'
     about = 'A website to create a list of places you want to visit.'

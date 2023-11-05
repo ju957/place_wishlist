@@ -2,7 +2,7 @@ from django.urls import path
 from . import views
 
 
-#  Creates a url for the places
+#  Stores the url paths for each webpage. No path means it is the default home page.
 urlpatterns = [
     path('', views.place_list, name='place_list'),
     path('visited', views.places_visited, name='places_visited'),

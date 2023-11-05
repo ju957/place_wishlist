@@ -1,6 +1,6 @@
 from django.db import models
 
-"""Place model template that users will use to input/see where they've gone/want to go."""
+"""Place object used to link a place's name and whether it's been visited. """
 class Place(models.Model):
     name = models.CharField(max_length=200)
     visited = models.BooleanField(default=False)
