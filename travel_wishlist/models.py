@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.core.files.storage import default_storage
 
 """Place object used to link a place's name and whether it's been visited. Also has a user's key to allow for user-specific
  wish lists, when they may have visited the place, notes on said place, and a photo if one is available."""
@@ -10,6 +11,25 @@ class Place(models.Model):
     notes = models.TextField(blank=True, null=True)
     date_visited = models.DateField(blank=True, null=True)
     photo = models.ImageField(upload_to='user_images/', blank=True,  null=True)
+
+    def save(self, *args, **kwargs):
+        old_place = Place.objects.filter(pk=self.pk).first()
+        if old_place and old_place.photo:
+            if old_place.photo != self.photo:
+                self.delete_photo(old_place.photo)
+
+        super().save(*args, **kwargs)
+
+    def delete(self, *args, **kwargs):
+        if self.photo:
+            self.delete_photo(self.photo)
+
+        super().delete(*args, **kwargs)
+
+    def delete_photo(self, photo):
+        if default_storage.exists(photo.name):
+            default_storage.delete(photo.name)
+
 
     # Gives basic info on a place, such as who added it, its name, and details if possible. Not intended to be seen by users.
     def __str__(self):
