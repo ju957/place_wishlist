@@ -33,7 +33,8 @@ def places_visited(request):
 
 
 """This function changes the status of a place from unvisited TO visited, and makes a change to the database entry.
-Error handling for nonexistent locations is present."""
+Error handling for nonexistent locations is present. It will also check if the place's owner is the one trying to 
+change its visited status, and will stop the change if they are not."""
 @login_required()
 def place_was_visited(request, place_pk):
     if request.method == 'POST':
