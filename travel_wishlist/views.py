@@ -54,7 +54,22 @@ def about(request):
     about = 'A website to create a list of places you want to visit.'
     return render(request, 'about.html', {'author': author, 'about': about})
 
+
+"""Sends the user to the details page for a place, which says whether the place has been visited, a button to make it
+visited if it hasn't been, and a delete button to remove the place entirely."""
 @login_required()
 def place_details(request, place_pk):
     place = get_object_or_404(Place, pk=place_pk)
     return render(request, 'place_detail.html', {'place': place})
+
+
+"""This will delete a place from a user's wishlist. If the requester is that the same person that added the place, the
+place will not be deleted."""
+@login_required()
+def delete_place(request, place_pk):
+    place = get_object_or_404(Place, pk=place_pk)
+    if place.user == request.user:
+        place.delete()
+        return redirect('place_list')
+    else:
+        return HttpResponseForbidden

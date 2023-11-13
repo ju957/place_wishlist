@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block content %}
 
 <h2>{{ place.name }}</h2>
@@ -13,5 +14,12 @@
             <button type="submit" class="visited">Visited!</button>
         </form>
     {% endif %}
+
+    <form action="{% url 'delete_place' place.pk %}" method="POST">
+    {% csrf_token %}
+    <button type="submit" class="delete">Delete</button>
+    </form>
+
+    <script src="{% static 'js/confirm_delete.js' %}"></script>
 
 {% endblock %}
