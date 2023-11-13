@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .models import Place
 from .forms import NewPlaceForm
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseForbidden
 
 # @login_required will only allow the function to be called when someone is logged in.
 
@@ -37,8 +38,11 @@ Error handling for nonexistent locations is present."""
 def place_was_visited(request, place_pk):
     if request.method == 'POST':
         place = get_object_or_404(Place, pk=place_pk)
-        place.visited = True
-        place.save()
+        if place.user == request.user:
+            place.visited = True
+            place.save()
+        else:
+            return HttpResponseForbidden()
 
     return redirect('place_list')
 
@@ -48,3 +52,8 @@ def about(request):
     author = 'Zion Nichols'
     about = 'A website to create a list of places you want to visit.'
     return render(request, 'about.html', {'author': author, 'about': about})
+
+@login_required()
+def place_details(request, place_pk):
+    place = get_object_or_404(Place, pk=place_pk)
+    return render(request, 'place_detail.html', {'place': place})
